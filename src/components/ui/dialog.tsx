@@ -105,6 +105,19 @@ function DialogDescription({
   )
 }
 
+function DialogFooter({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      data-slot="dialog-footer"
+      className={cn("mt-6 flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-2", className)}
+      {...props}
+    />
+  )
+}
+
 export {
   Dialog,
   DialogTrigger,
@@ -112,4 +125,5 @@ export {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 }

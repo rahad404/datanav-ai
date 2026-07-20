@@ -14,19 +14,28 @@ import {
   TrendingDown,
   Minus,
   CheckCircle2,
-  ChevronRight,
   Compass,
   BarChart3,
-  LineChart,
-  PieChart,
   Download,
   Brain,
   Globe,
   Zap,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Mail,
+  Star,
+  Target,
+  Layers,
+  LineChart,
+  PieChart,
+  Table,
+  RefreshCw,
+  FileText,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 
 // ---------------------------------------------------------------------------
 // Data
@@ -71,14 +80,11 @@ const heroSlides: {
   },
 ]
 
-const kindStyles: Record<
-  SlideKind,
-  { bar: string; icon: React.ReactNode; label: string }
-> = {
-  trend: { bar: "bg-emerald-500", icon: <TrendingUp className="size-4" />, label: "text-emerald-500" },
-  kpi: { bar: "bg-emerald-500", icon: <Minus className="size-4" />, label: "text-emerald-500" },
-  risk: { bar: "bg-orange-500", icon: <ShieldAlert className="size-4" />, label: "text-orange-500" },
-  recommendation: { bar: "bg-orange-500", icon: <TrendingDown className="size-4" />, label: "text-orange-500" },
+const kindStyles: Record<SlideKind, { bar: string; icon: React.ReactNode; color: string }> = {
+  trend: { bar: "bg-emerald-500", icon: <TrendingUp className="size-4" />, color: "text-emerald-500" },
+  kpi: { bar: "bg-emerald-500", icon: <Minus className="size-4" />, color: "text-emerald-500" },
+  risk: { bar: "bg-orange-500", icon: <ShieldAlert className="size-4" />, color: "text-orange-500" },
+  recommendation: { bar: "bg-orange-500", icon: <TrendingDown className="size-4" />, color: "text-orange-500" },
 }
 
 const features = [
@@ -123,7 +129,7 @@ const steps = [
 
 const fileTypes = [
   { icon: <FileSpreadsheet className="size-8" />, name: "CSV", note: "Comma or tab separated, headers auto-detected" },
-  { icon: <FileSpreadsheet className="size-8" />, name: "XLSX / XLS", note: "First sheet is read; multi-sheet support coming" },
+  { icon: <Table className="size-8" />, name: "XLSX / XLS", note: "First sheet is read; multi-sheet support coming" },
   { icon: <FileJson className="size-8" />, name: "JSON", note: "Array of records, or an object with a data[] field" },
 ]
 
@@ -137,19 +143,19 @@ const stats = [
 const testimonials = [
   {
     name: "Rae M.",
-    role: "Ops lead, mid-size retailer",
+    role: "Ops Lead, Mid-size Retailer",
     quote:
       "I stopped exporting the same spreadsheet into five different chart tools. Upload, read, done.",
   },
   {
     name: "Jordan T.",
-    role: "Finance, early-stage startup",
+    role: "Finance, Early-stage Startup",
     quote:
       "The risk callouts caught a churn pattern two weeks before it showed up in our actual numbers.",
   },
   {
     name: "Asha K.",
-    role: "Founder, DTC brand",
+    role: "Founder, DTC Brand",
     quote: "It reads like an analyst wrote it, not like a model dumping a paragraph on me.",
   },
 ]
@@ -177,19 +183,66 @@ const faqs = [
   },
 ]
 
+const extras = [
+  { icon: Target, title: "No templates required", description: "Upload any structured file — we auto-detect the schema." },
+  { icon: RefreshCw, title: "Regenerate anytime", description: "Re-run analysis with a click when your data changes." },
+  { icon: Layers, title: "Multi-category support", description: "Sales, finance, marketing, operations — all in one place." },
+]
+
 // ---------------------------------------------------------------------------
 // Components
 // ---------------------------------------------------------------------------
 
-function InsightCard({ slide }: { slide: (typeof heroSlides)[number] }) {
+function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: string }) {
+  const [display, setDisplay] = React.useState("0")
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const num = parseInt(value.replace(/[^0-9]/g, ""))
+            if (isNaN(num)) {
+              setDisplay(value)
+              return
+            }
+            let start = 0
+            const step = Math.ceil(num / 30)
+            const interval = setInterval(() => {
+              start += step
+              if (start >= num) {
+                setDisplay(value)
+                clearInterval(interval)
+              } else {
+                setDisplay(start + suffix)
+              }
+            }, 40)
+            observer.unobserve(el)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [value, suffix])
+
+  return <span ref={ref}>{display}</span>
+}
+
+function InsightCard({ slide, className = "" }: { slide: (typeof heroSlides)[number]; className?: string }) {
   const style = kindStyles[slide.kind]
   return (
-    <div className="group relative overflow-hidden rounded-xl border bg-card p-5 transition-all hover:shadow-lg hover:shadow-emerald-500/5">
+    <div className={`group relative overflow-hidden rounded-xl border bg-card p-5 transition-all hover:shadow-lg hover:shadow-emerald-500/5 ${className}`}>
       <div className={`absolute left-0 top-0 h-full w-1 ${style.bar}`} />
       <div className="space-y-3 pl-4">
         <div className="flex items-center gap-2">
-          <span className={style.label}>{style.icon}</span>
-          <span className={`text-xs font-medium uppercase tracking-wider ${style.label}`}>
+          <span className={style.color}>{style.icon}</span>
+          <span className={`text-xs font-medium uppercase tracking-wider ${style.color}`}>
             {slide.eyebrow}
           </span>
         </div>
@@ -203,22 +256,27 @@ function InsightCard({ slide }: { slide: (typeof heroSlides)[number] }) {
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = React.useState(false)
+  const contentRef = React.useRef<HTMLDivElement>(null)
+
   return (
     <div className="border-b border-border">
       <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-4 text-left"
+        className="flex w-full items-center justify-between py-4 text-left transition-colors hover:text-emerald-600 dark:hover:text-emerald-400"
       >
         <span className="font-medium">{q}</span>
         <ChevronDown
-          className={`size-4 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+          className={`size-4 shrink-0 text-muted-foreground transition-all duration-300 ${open ? "rotate-180 text-emerald-500" : ""}`}
         />
       </button>
-      {open && (
-        <div className="pb-4 text-sm text-muted-foreground">
+      <div
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{ maxHeight: open ? contentRef.current?.scrollHeight : 0 }}
+      >
+        <div ref={contentRef} className="pb-4 text-sm text-muted-foreground leading-relaxed">
           {a}
         </div>
-      )}
+      </div>
     </div>
   )
 }
@@ -244,6 +302,15 @@ function SectionHeading({ label, title, description }: { label?: string; title: 
 // ---------------------------------------------------------------------------
 
 export default function LandingPage() {
+  const [activeSlide, setActiveSlide] = React.useState(0)
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
+
   return (
     <>
       {/* ──────── Hero ──────── */}
@@ -259,16 +326,24 @@ export default function LandingPage() {
             <rect width="100%" height="100%" fill="url(#hero-grid)" />
           </svg>
         </div>
+
+        {/* Animated gradient orbs */}
+        <div className="pointer-events-none absolute -top-40 -right-40 size-96 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-40 -left-40 size-96 rounded-full bg-orange-500/5 blur-3xl" />
+
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
+            {/* Left: Text */}
             <div className="space-y-8">
-              <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              <Badge variant="outline" className="animate-fade-in border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <Zap className="mr-1 size-3" />
                 AI-powered data analysis
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
                 Turn your data into{" "}
-                <span className="text-emerald-600 dark:text-emerald-400">actionable insights</span>
+                <span className="bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent dark:from-emerald-400 dark:to-emerald-300">
+                  actionable insights
+                </span>
               </h1>
               <p className="max-w-xl text-lg text-muted-foreground">
                 Upload CSV, Excel, or JSON files and get AI-generated analysis — trend detection, 
@@ -276,13 +351,13 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/signup">
-                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700">
+                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/25 transition-all hover:shadow-xl hover:shadow-emerald-600/30 hover:scale-[1.02]">
                     Get started free
                     <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
                 <Link href="/explore">
-                  <Button size="lg" variant="outline">
+                  <Button size="lg" variant="outline" className="transition-all hover:scale-[1.02]">
                     <Globe className="mr-2 size-4" />
                     Explore reports
                   </Button>
@@ -297,13 +372,44 @@ export default function LandingPage() {
                   <CheckCircle2 className="size-4 text-emerald-500" />
                   Free tier available
                 </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-4 text-emerald-500" />
+                  38s avg. insight time
+                </div>
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {heroSlides.map((slide, i) => (
-                <InsightCard key={i} slide={slide} />
-              ))}
+            {/* Right: Auto-rotating carousel */}
+            <div className="relative">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {heroSlides.map((slide, i) => (
+                  <div
+                    key={i}
+                    className={`transition-all duration-500 ${
+                      i === activeSlide
+                        ? "opacity-100 scale-100"
+                        : i === (activeSlide + 1) % heroSlides.length
+                          ? "opacity-90 scale-[0.98]"
+                          : "opacity-60 scale-[0.95]"
+                    }`}
+                  >
+                    <InsightCard slide={slide} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Carousel dots */}
+              <div className="mt-4 flex justify-center gap-2">
+                {heroSlides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveSlide(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === activeSlide ? "w-6 bg-emerald-500" : "w-1.5 bg-muted-foreground/30"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -316,7 +422,7 @@ export default function LandingPage() {
             {stats.map((stat, i) => (
               <div key={i} className="text-center">
                 <p className="text-3xl font-bold font-mono tracking-tight text-emerald-600 dark:text-emerald-400">
-                  {stat.value}
+                  <AnimatedCounter value={stat.value} />
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
               </div>
@@ -325,8 +431,41 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ──────── Features ──────── */}
+      {/* ──────── Sample Insights Carousel ──────── */}
       <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <SectionHeading
+            label="Sample Insights"
+            title="See what AI analysis looks like"
+            description="Every analysis returns structured outputs — trends, KPIs, risks, and next actions."
+          />
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {heroSlides.map((slide, i) => (
+              <InsightCard
+                key={i}
+                slide={slide}
+                className={`transition-all duration-500 ${
+                  i === activeSlide ? "ring-2 ring-emerald-500/30 shadow-lg shadow-emerald-500/10" : ""
+                }`}
+              />
+            ))}
+          </div>
+          <div className="mt-6 flex justify-center gap-2">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveSlide(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === activeSlide ? "w-8 bg-emerald-500" : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ──────── Features ──────── */}
+      <section className="border-b border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <SectionHeading
             label="Features"
@@ -337,13 +476,13 @@ export default function LandingPage() {
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="group rounded-xl border bg-card p-6 transition-all hover:shadow-md hover:shadow-emerald-500/5"
+                className="group rounded-xl border bg-card p-6 transition-all hover:shadow-md hover:shadow-emerald-500/5 hover:-translate-y-0.5"
               >
-                <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white dark:text-emerald-400 dark:group-hover:text-white">
                   {feature.icon}
                 </div>
                 <h3 className="mt-4 font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -351,7 +490,7 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── How it works ──────── */}
-      <section className="border-b border-border bg-muted/30">
+      <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <SectionHeading
             label="How it works"
@@ -361,11 +500,11 @@ export default function LandingPage() {
           <div className="mt-12 grid gap-8 md:grid-cols-4">
             {steps.map((step, i) => (
               <div key={i} className="relative text-center">
-                <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-emerald-600/10 text-lg font-bold text-emerald-600 dark:text-emerald-400">
+                <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 text-lg font-bold text-white shadow-lg shadow-emerald-600/20">
                   {step.n}
                 </div>
                 {i < steps.length - 1 && (
-                  <div className="absolute left-[calc(50%+2rem)] top-7 hidden h-px w-[calc(100%-4rem)] border-t border-dashed border-border md:block" />
+                  <div className="absolute left-[calc(50%+2.5rem)] top-8 hidden h-px w-[calc(100%-5rem)] border-t-2 border-dashed border-emerald-200 dark:border-emerald-800 md:block" />
                 )}
                 <h3 className="mt-4 font-semibold">{step.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
@@ -376,7 +515,7 @@ export default function LandingPage() {
       </section>
 
       {/* ──────── File Types ──────── */}
-      <section className="border-b border-border">
+      <section className="border-b border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <SectionHeading
             label="Supported formats"
@@ -387,13 +526,34 @@ export default function LandingPage() {
             {fileTypes.map((ft, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center rounded-xl border bg-card p-8 text-center transition-all hover:shadow-md"
+                className="group flex flex-col items-center rounded-xl border bg-card p-8 text-center transition-all hover:shadow-lg hover:-translate-y-0.5"
               >
-                <div className="flex size-16 items-center justify-center rounded-2xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                <div className="flex size-16 items-center justify-center rounded-2xl bg-emerald-600/10 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white dark:text-emerald-400 dark:group-hover:text-white">
                   {ft.icon}
                 </div>
                 <h3 className="mt-4 text-xl font-bold">{ft.name}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{ft.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ──────── Extras ──────── */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <SectionHeading
+            label="Why DataNav AI"
+            title="Built for real-world data work"
+          />
+          <div className="mt-12 grid gap-6 sm:grid-cols-3">
+            {extras.map((item, i) => (
+              <div key={i} className="rounded-xl border bg-card p-6 text-center">
+                <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                  <item.icon className="size-6" />
+                </div>
+                <h3 className="mt-4 font-semibold">{item.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
               </div>
             ))}
           </div>
@@ -410,17 +570,24 @@ export default function LandingPage() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {testimonials.map((t, i) => (
-              <div key={i} className="rounded-xl border bg-card p-6">
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-full bg-emerald-600/10 text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                    {t.name.split(" ").map(n => n[0]).join("")}
-                  </div>
+              <div key={i} className="group rounded-xl border bg-card p-6 transition-all hover:shadow-md">
+                <div className="flex items-center gap-3 mb-4">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=10B981&color=fff&bold=true&size=40`}
+                    alt={t.name}
+                    className="size-10 rounded-full ring-2 ring-emerald-500/20"
+                  />
                   <div>
                     <p className="text-sm font-medium">{t.name}</p>
                     <p className="text-xs text-muted-foreground">{t.role}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">&ldquo;{t.quote}&rdquo;</p>
+                <div className="flex gap-0.5 mb-3">
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <Star key={s} className="size-3.5 fill-emerald-500 text-emerald-500" />
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{t.quote}&rdquo;</p>
               </div>
             ))}
           </div>
@@ -434,7 +601,7 @@ export default function LandingPage() {
             label="FAQ"
             title="Frequently asked questions"
           />
-          <div className="mt-12">
+          <div className="mt-12 rounded-xl border bg-card p-6">
             {faqs.map((faq, i) => (
               <FaqItem key={i} q={faq.q} a={faq.a} />
             ))}
@@ -442,7 +609,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ──────── CTA ──────── */}
+      {/* ──────── CTA + Newsletter ──────── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800" />
         <div className="absolute inset-0 opacity-10">
@@ -455,7 +622,9 @@ export default function LandingPage() {
             <rect width="100%" height="100%" fill="url(#cta-grid)" />
           </svg>
         </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute top-1/2 left-1/2 size-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/20 blur-3xl" />
+
+        <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Ready to turn your data into insights?
           </h2>
@@ -464,17 +633,49 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/signup">
-              <Button size="lg" variant="secondary" className="bg-white text-emerald-800 hover:bg-emerald-50">
+              <Button size="lg" variant="secondary" className="bg-white text-emerald-800 hover:bg-emerald-50 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]">
                 Get started free
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </Link>
             <Link href="/explore">
-              <Button size="lg" variant="outline" className="border-emerald-400 text-white hover:bg-emerald-500/20">
+              <Button size="lg" variant="outline" className="border-emerald-400 text-white hover:bg-emerald-500/20 transition-all hover:scale-[1.02]">
                 <Globe className="mr-2 size-4" />
                 Explore reports
               </Button>
             </Link>
+          </div>
+
+          {/* Newsletter */}
+          <div className="mx-auto mt-12 max-w-md">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Mail className="size-4 text-emerald-300" />
+              <span className="text-sm text-emerald-200">Stay updated with product news</span>
+            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                const input = (e.target as HTMLFormElement).querySelector("input")!
+                if (input.value) {
+                  input.value = ""
+                }
+              }}
+              className="flex gap-2"
+            >
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="h-11 flex-1 border-emerald-400/30 bg-white/10 text-white placeholder:text-emerald-200/60 focus:border-emerald-300 focus:ring-emerald-300"
+                required
+              />
+              <Button
+                type="submit"
+                variant="secondary"
+                className="h-11 shrink-0 bg-white text-emerald-800 hover:bg-emerald-50"
+              >
+                Subscribe
+              </Button>
+            </form>
           </div>
         </div>
       </section>

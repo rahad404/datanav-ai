@@ -163,9 +163,9 @@ export function Navbar() {
                      <Link href="/login">
                         <Button variant="ghost">Log in</Button>
                      </Link>
-                     <Link href="/register">
-                        <Button>Sign up</Button>
-                     </Link>
+                      <Link href="/signup">
+                         <Button>Sign up</Button>
+                      </Link>
                   </>
                )}
             </div>
@@ -251,9 +251,9 @@ export function Navbar() {
                      <Link href="/login" onClick={() => setIsOpen(false)}>
                         <Button variant="ghost" className="w-full">Log in</Button>
                      </Link>
-                     <Link href="/register" onClick={() => setIsOpen(false)}>
-                        <Button className="w-full">Sign up</Button>
-                     </Link>
+                      <Link href="/signup" onClick={() => setIsOpen(false)}>
+                         <Button className="w-full">Sign up</Button>
+                      </Link>
                   </div>
                )}
             </div>

@@ -4,19 +4,11 @@ import { useState, FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Leaf, ArrowRight } from "lucide-react";
+import { Compass, ArrowRight, TrendingUp, BarChart3, LineChart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-   Card,
-   CardContent,
-   CardDescription,
-   CardFooter,
-   CardHeader,
-   CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 import { authClient } from "@/lib/auth-client";
@@ -64,15 +56,14 @@ function LoginForm() {
 
    return (
       <div className="flex min-h-screen">
-         {/* Left side - Form */}
          <div className="flex flex-1 flex-col justify-center px-6 py-12 lg:px-12 xl:px-16">
             <div className="mx-auto w-full max-w-md">
                <Link href="/" className="flex items-center gap-2 mb-8">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary shadow-md shadow-primary/20">
-                     <Leaf className="text-primary-foreground" size={22} />
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-600/20">
+                     <Compass className="text-white" size={22} />
                   </div>
                   <span className="text-2xl font-bold tracking-tight">
-                     Plant<span className="text-primary">Pot</span>
+                     DataNav<span className="text-emerald-600">AI</span>
                   </span>
                </Link>
 
@@ -149,7 +140,7 @@ function LoginForm() {
                            <Label htmlFor="password">Password</Label>
                            <Link
                               href="/forgot-password"
-                              className="text-xs text-primary hover:underline underline-offset-4"
+                              className="text-xs text-emerald-600 hover:underline underline-offset-4"
                            >
                               Forgot password?
                            </Link>
@@ -166,7 +157,7 @@ function LoginForm() {
                         />
                      </div>
 
-                     <Button type="submit" className="w-full h-11" disabled={isLoading}>
+                     <Button type="submit" className="w-full h-11 bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
                         {isLoading ? "Signing in..." : "Sign in"}
                         {!isLoading && <ArrowRight className="ml-2 size-4" />}
                      </Button>
@@ -177,7 +168,7 @@ function LoginForm() {
                   Don&apos;t have an account?{" "}
                   <Link
                      href="/signup"
-                     className="font-medium text-primary hover:underline underline-offset-4"
+                     className="font-medium text-emerald-600 hover:underline underline-offset-4"
                   >
                      Sign up for free
                   </Link>
@@ -185,22 +176,39 @@ function LoginForm() {
             </div>
          </div>
 
-         {/* Right side - Image */}
          <div className="relative hidden lg:flex lg:flex-1">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
-            <img
-               src="https://i.ibb.co.com/bMMy028C/How-to-Water-Cactus-Feature.jpg"
-               alt="Plants"
-               className="h-full w-full object-cover"
-            />
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-orange-500/5" />
+            <div className="absolute inset-0 opacity-[0.03]">
+               <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1" />
+                     </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#grid)" />
+               </svg>
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
             <div className="absolute bottom-12 left-12 right-12">
-               <blockquote className="space-y-2">
-                  <p className="text-lg font-medium leading-relaxed">
-                     &ldquo;Bringing nature into your home has never been easier. PlantPot made my plant journey a joy.&rdquo;
-                  </p>
-                  <footer className="text-sm text-muted-foreground">— Sarah M., Plant Enthusiast</footer>
-               </blockquote>
+               <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                     <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/20">
+                        <TrendingUp className="size-5 text-emerald-500" />
+                     </div>
+                     <div className="flex size-10 items-center justify-center rounded-lg bg-orange-600/20">
+                        <BarChart3 className="size-5 text-orange-500" />
+                     </div>
+                     <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/20">
+                        <LineChart className="size-5 text-emerald-500" />
+                     </div>
+                  </div>
+                  <blockquote className="space-y-2">
+                     <p className="text-lg font-medium leading-relaxed">
+                        &ldquo;Upload your data, get AI-powered insights in seconds. No more endless spreadsheets.&rdquo;
+                     </p>
+                     <footer className="text-sm text-muted-foreground">— DataNav AI</footer>
+                  </blockquote>
+               </div>
             </div>
          </div>
       </div>

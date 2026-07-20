@@ -1,35 +1,53 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Leaf, ArrowRight, Check } from "lucide-react";
+import { Compass, ArrowRight, Upload, X, TrendingUp, BarChart3, LineChart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-   Card,
-   CardContent,
-   CardDescription,
-   CardFooter,
-   CardHeader,
-   CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 import { authClient } from "@/lib/auth-client";
+import { uploadImageToImgBB, validateImageFile } from "@/lib/image-upload";
 
 export default function SignupPage() {
    const router = useRouter();
+   const fileInputRef = useRef<HTMLInputElement>(null);
 
    const [name, setName] = useState("");
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [confirmPassword, setConfirmPassword] = useState("");
+   const [profileImage, setProfileImage] = useState<File | null>(null);
+   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
    const [isLoading, setIsLoading] = useState(false);
    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+   function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const validation = validateImageFile(file);
+      if (!validation.valid) {
+         toast.error(validation.error!);
+         return;
+      }
+
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onload = () => setProfileImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+   }
+
+   function clearImage() {
+      setProfileImage(null);
+      setProfileImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+   }
 
    async function handleSubmit(e: FormEvent) {
       e.preventDefault();
@@ -45,22 +63,37 @@ export default function SignupPage() {
 
       setIsLoading(true);
 
-      const { error } = await authClient.signUp.email({
-         name,
-         email,
-         password,
-         callbackURL: `${process.env.NEXT_PUBLIC_APP_URL || ""}/dashboard`,
-      });
+      try {
+         let imageUrl: string | undefined;
 
-      setIsLoading(false);
+         if (profileImage) {
+            try {
+               imageUrl = await uploadImageToImgBB(profileImage);
+            } catch {
+               toast.error("Failed to upload profile image. You can add one later.");
+            }
+         }
 
-      if (error) {
-         toast.error(error.message || "Could not create account.");
-         return;
+         const { error } = await authClient.signUp.email({
+            name,
+            email,
+            password,
+            image: imageUrl,
+            callbackURL: `${process.env.NEXT_PUBLIC_APP_URL || ""}/dashboard`,
+         });
+
+         if (error) {
+            toast.error(error.message || "Could not create account.");
+            return;
+         }
+
+         toast.success("Check your email to verify your account.");
+         router.push("/login");
+      } catch {
+         toast.error("Something went wrong. Please try again.");
+      } finally {
+         setIsLoading(false);
       }
-
-      toast.success("Check your email to verify your account.");
-      router.push("/login");
    }
 
    async function handleGoogleSignIn() {
@@ -73,15 +106,14 @@ export default function SignupPage() {
 
    return (
       <div className="flex min-h-screen">
-         {/* Left side - Form */}
          <div className="flex flex-1 flex-col justify-center px-6 py-12 lg:px-12 xl:px-16">
             <div className="mx-auto w-full max-w-md">
                <Link href="/" className="flex items-center gap-2 mb-8">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary shadow-md shadow-primary/20">
-                     <Leaf className="text-primary-foreground" size={22} />
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-600/20">
+                     <Compass className="text-white" size={22} />
                   </div>
                   <span className="text-2xl font-bold tracking-tight">
-                     Plant<span className="text-primary">Pot</span>
+                     DataNav<span className="text-emerald-600">AI</span>
                   </span>
                </Link>
 
@@ -153,6 +185,51 @@ export default function SignupPage() {
                         />
                      </div>
 
+                     {/* Profile Image Upload */}
+                     <div className="space-y-2">
+                        <Label>Profile picture (optional)</Label>
+                        <div className="flex items-center gap-4">
+                           {profileImagePreview ? (
+                              <div className="relative size-16 shrink-0">
+                                 <img
+                                    src={profileImagePreview}
+                                    alt="Preview"
+                                    className="size-16 rounded-full object-cover border-2 border-emerald-500"
+                                 />
+                                 <button
+                                    type="button"
+                                    onClick={clearImage}
+                                    className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground"
+                                 >
+                                    <X className="size-3" />
+                                 </button>
+                              </div>
+                           ) : (
+                              <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-muted border-2 border-dashed border-muted-foreground/30">
+                                 <Upload className="size-6 text-muted-foreground/50" />
+                              </div>
+                           )}
+                           <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => fileInputRef.current?.click()}
+                           >
+                              {profileImagePreview ? "Change photo" : "Upload photo"}
+                           </Button>
+                           <input
+                              ref={fileInputRef}
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp,image/gif"
+                              className="hidden"
+                              onChange={handleImageSelect}
+                           />
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                           JPG, PNG or WebP. Max 5MB.
+                        </p>
+                     </div>
+
                      <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
                         <Input
@@ -195,7 +272,7 @@ export default function SignupPage() {
                         />
                      </div>
 
-                     <Button type="submit" className="w-full h-11" disabled={isLoading}>
+                     <Button type="submit" className="w-full h-11 bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
                         {isLoading ? "Creating account..." : "Create account"}
                         {!isLoading && <ArrowRight className="ml-2 size-4" />}
                      </Button>
@@ -206,7 +283,7 @@ export default function SignupPage() {
                   Already have an account?{" "}
                   <Link
                      href="/login"
-                     className="font-medium text-primary hover:underline underline-offset-4"
+                     className="font-medium text-emerald-600 hover:underline underline-offset-4"
                   >
                      Sign in
                   </Link>
@@ -214,35 +291,52 @@ export default function SignupPage() {
             </div>
          </div>
 
-         {/* Right side - Image */}
          <div className="relative hidden lg:flex lg:flex-1">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
-            <img
-               src="https://i.ibb.co.com/wZrhLzMC/images-3.jpg"
-               alt="Plants"
-               className="h-full w-full object-cover"
-            />
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-orange-500/5" />
+            <div className="absolute inset-0 opacity-[0.03]">
+               <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                     <pattern id="signup-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1" />
+                     </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#signup-grid)" />
+               </svg>
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
             <div className="absolute bottom-12 left-12 right-12">
-               <h3 className="text-xl font-semibold mb-3">Start your plant journey</h3>
-               <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                     <Check className="size-4 text-primary" />
-                     Access to 500+ plant varieties
-                  </li>
-                  <li className="flex items-center gap-2">
-                     <Check className="size-4 text-primary" />
-                     Personalized care schedules
-                  </li>
-                  <li className="flex items-center gap-2">
-                     <Check className="size-4 text-primary" />
-                     Expert plant care tips
-                  </li>
-                  <li className="flex items-center gap-2">
-                     <Check className="size-4 text-primary" />
-                     Free shipping on orders over $50
-                  </li>
-               </ul>
+               <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                     <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/20">
+                        <TrendingUp className="size-5 text-emerald-500" />
+                     </div>
+                     <div className="flex size-10 items-center justify-center rounded-lg bg-orange-600/20">
+                        <BarChart3 className="size-5 text-orange-500" />
+                     </div>
+                     <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/20">
+                        <LineChart className="size-5 text-emerald-500" />
+                     </div>
+                  </div>
+                  <h3 className="text-xl font-semibold">Turn your data into insights</h3>
+                  <ul className="space-y-3 text-sm text-muted-foreground">
+                     <li className="flex items-center gap-2">
+                        <div className="size-1.5 rounded-full bg-emerald-500" />
+                        Upload CSV, Excel, or JSON files
+                     </li>
+                     <li className="flex items-center gap-2">
+                        <div className="size-1.5 rounded-full bg-emerald-500" />
+                        AI-powered trend detection & KPI analysis
+                     </li>
+                     <li className="flex items-center gap-2">
+                        <div className="size-1.5 rounded-full bg-emerald-500" />
+                        Risk flags & actionable recommendations
+                     </li>
+                     <li className="flex items-center gap-2">
+                        <div className="size-1.5 rounded-full bg-emerald-500" />
+                        Context-aware AI chat assistant
+                     </li>
+                  </ul>
+               </div>
             </div>
          </div>
       </div>

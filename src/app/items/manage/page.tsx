@@ -90,7 +90,7 @@ export default function MyReportsPage() {
           </p>
         </div>
         <Link href="/items/add">
-          <Button className="bg-emerald-600 hover:bg-emerald-700">
+          <Button className="bg-success hover:bg-success/90">
             <Plus className="mr-2 size-4" />
             New Analysis
           </Button>
@@ -143,13 +143,13 @@ export default function MyReportsPage() {
                   <tr key={report._id} className="group hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">
                           <FileText className="size-4" />
                         </div>
                         <div className="min-w-0">
                           <Link
                             href={`/reports/${report._id}`}
-                            className="font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors truncate block"
+                            className="font-medium hover:text-success-text transition-colors truncate block"
                           >
                             {report.title}
                           </Link>

@@ -52,7 +52,7 @@ export function Pagination({ page, pages, onPageChange, className }: PaginationP
             onClick={() => onPageChange(item as number)}
             className={cn(
               "size-9 text-sm",
-              item === page && "bg-emerald-600 hover:bg-emerald-700"
+              item === page && "bg-success hover:bg-success/90"
             )}
           >
             {item}

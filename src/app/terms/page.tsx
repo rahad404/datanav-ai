@@ -4,8 +4,8 @@ export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center mb-12">
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-600/10 mx-auto mb-6">
-          <Scale className="size-7 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex size-14 items-center justify-center           rounded-2xl bg-success/10 mx-auto mb-6">
+          <Scale className="size-7 text-success-text" />
         </div>
         <h1 className="text-4xl font-bold tracking-tight">Terms of Service</h1>
         <p className="mt-4 text-muted-foreground">Last updated: January 2026</p>

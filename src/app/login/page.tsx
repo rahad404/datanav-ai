@@ -59,11 +59,11 @@ function LoginForm() {
          <div className="flex flex-1 flex-col justify-center px-6 py-12 lg:px-12 xl:px-16">
             <div className="mx-auto w-full max-w-md">
                <Link href="/" className="flex items-center gap-2 mb-8">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-600/20">
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-success shadow-md shadow-success/20">
                      <Compass className="text-white" size={22} />
                   </div>
                   <span className="text-2xl font-bold tracking-tight">
-                     DataNav<span className="text-emerald-600">AI</span>
+                     DataNav<span className="text-success">AI</span>
                   </span>
                </Link>
 
@@ -140,7 +140,7 @@ function LoginForm() {
                            <Label htmlFor="password">Password</Label>
                            <Link
                               href="/forgot-password"
-                              className="text-xs text-emerald-600 hover:underline underline-offset-4"
+                               className="text-xs text-success-text hover:underline underline-offset-4"
                            >
                               Forgot password?
                            </Link>
@@ -157,7 +157,7 @@ function LoginForm() {
                         />
                      </div>
 
-                     <Button type="submit" className="w-full h-11 bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
+                      <Button type="submit" className="w-full h-11 bg-success hover:bg-success/90" disabled={isLoading}>
                         {isLoading ? "Signing in..." : "Sign in"}
                         {!isLoading && <ArrowRight className="ml-2 size-4" />}
                      </Button>
@@ -168,7 +168,7 @@ function LoginForm() {
                   Don&apos;t have an account?{" "}
                   <Link
                      href="/signup"
-                     className="font-medium text-emerald-600 hover:underline underline-offset-4"
+                      className="font-medium text-success-text hover:underline underline-offset-4"
                   >
                      Sign up for free
                   </Link>
@@ -177,7 +177,7 @@ function LoginForm() {
          </div>
 
          <div className="relative hidden lg:flex lg:flex-1">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-orange-500/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-success/20 via-success/10 to-risk-high/5" />
             <div className="absolute inset-0 opacity-[0.03]">
                <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                   <defs>
@@ -192,14 +192,14 @@ function LoginForm() {
             <div className="absolute bottom-12 left-12 right-12">
                <div className="space-y-6">
                   <div className="flex items-center gap-3">
-                     <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/20">
-                        <TrendingUp className="size-5 text-emerald-500" />
-                     </div>
-                     <div className="flex size-10 items-center justify-center rounded-lg bg-orange-600/20">
-                        <BarChart3 className="size-5 text-orange-500" />
-                     </div>
-                     <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/20">
-                        <LineChart className="size-5 text-emerald-500" />
+                      <div className="flex size-10 items-center justify-center rounded-lg bg-success/20">
+                         <TrendingUp className="size-5 text-success" />
+                      </div>
+                      <div className="flex size-10 items-center justify-center rounded-lg bg-risk-high/20">
+                         <BarChart3 className="size-5 text-risk-high" />
+                      </div>
+                      <div className="flex size-10 items-center justify-center rounded-lg bg-success/20">
+                         <LineChart className="size-5 text-success" />
                      </div>
                   </div>
                   <blockquote className="space-y-2">

@@ -100,10 +100,10 @@ const heroSlides: {
 ]
 
 const kindStyles: Record<SlideKind, { bar: string; icon: React.ReactNode; color: string }> = {
-  trend: { bar: "bg-emerald-500", icon: <TrendingUp className="size-4" />, color: "text-emerald-500" },
-  kpi: { bar: "bg-emerald-500", icon: <Minus className="size-4" />, color: "text-emerald-500" },
-  risk: { bar: "bg-orange-500", icon: <ShieldAlert className="size-4" />, color: "text-orange-500" },
-  recommendation: { bar: "bg-orange-500", icon: <TrendingDown className="size-4" />, color: "text-orange-500" },
+  trend: { bar: "bg-success", icon: <TrendingUp className="size-4" />, color: "text-success" },
+  kpi: { bar: "bg-success", icon: <Minus className="size-4" />, color: "text-success" },
+  risk: { bar: "bg-risk-high", icon: <ShieldAlert className="size-4" />, color: "text-risk-high" },
+  recommendation: { bar: "bg-risk-high", icon: <TrendingDown className="size-4" />, color: "text-risk-high" },
 }
 
 const features = [
@@ -256,7 +256,7 @@ function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: strin
 function InsightCard({ slide, className = "" }: { slide: (typeof heroSlides)[number]; className?: string }) {
   const style = kindStyles[slide.kind]
   return (
-    <div className={`group relative overflow-hidden rounded-xl border border-border/60 bg-card/60 backdrop-blur-md p-5 transition-all hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/40 ${className}`}>
+    <div className={`group relative overflow-hidden rounded-xl border border-border/60 bg-card/60 backdrop-blur-md p-5 transition-all hover:shadow-xl hover:shadow-success/10 hover:border-success/40 ${className}`}>
       <div className={`absolute left-0 top-0 h-full w-1 ${style.bar}`} />
       <div className="space-y-3 pl-4">
         <div className="flex items-center gap-2">
@@ -294,7 +294,7 @@ function HeroImageCarousel() {
   return (
     <div className="relative mx-auto w-full max-w-2xl group">
       {/* Decorative Outer Glow */}
-      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500/30 via-teal-500/20 to-orange-500/30 blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-success/30 via-success/20 to-risk-high/30 blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
 
       {/* Main Container */}
       <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-xl shadow-2xl">
@@ -302,15 +302,15 @@ function HeroImageCarousel() {
         {/* Top Window Bar Mockup */}
         <div className="flex items-center justify-between border-b border-border/60 bg-muted/40 px-4 py-3">
           <div className="flex items-center gap-2">
-            <span className="size-3 rounded-full bg-red-500/80" />
-            <span className="size-3 rounded-full bg-yellow-500/80" />
-            <span className="size-3 rounded-full bg-green-500/80" />
+            <span className="size-3 rounded-full bg-danger/80" />
+            <span className="size-3 rounded-full bg-warning/80" />
+            <span className="size-3 rounded-full bg-success/80" />
           </div>
           <div className="text-xs font-medium text-muted-foreground/80 flex items-center gap-1.5">
-            <Sparkles className="size-3.5 text-emerald-500" />
+            <Sparkles className="size-3.5 text-success" />
             <span>DataNav AI Live Preview</span>
           </div>
-          <Badge variant="secondary" className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+          <Badge variant="secondary" className="text-[10px] bg-success/10 text-success-text">
             {heroCarouselImages[currentIndex].title}
           </Badge>
         </div>
@@ -353,8 +353,8 @@ function HeroImageCarousel() {
           {/* Floating Live Badge Overlay */}
           <div className="absolute bottom-4 left-4 z-20 hidden sm:flex items-center gap-2 rounded-lg border border-border/60 bg-background/80 px-3 py-1.5 backdrop-blur-md shadow-md text-xs font-medium">
             <span className="relative flex size-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+              <span className="relative inline-flex size-2 rounded-full bg-success" />
             </span>
             <span>AI Model Active</span>
           </div>
@@ -371,7 +371,7 @@ function HeroImageCarousel() {
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === currentIndex ? "w-6 bg-emerald-500" : "w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/60"
+                  idx === currentIndex ? "w-6 bg-success" : "w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/60"
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
@@ -391,12 +391,12 @@ function FaqItem({ q, a }: { q: string; a: string }) {
     <div className="border-b border-border/60 last:border-none">
       <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-emerald-500"
+        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-success"
       >
         <span className="font-semibold text-base sm:text-lg">{q}</span>
         <ChevronDown
           className={`size-5 shrink-0 text-muted-foreground transition-transform duration-300 ${
-            open ? "rotate-180 text-emerald-500" : ""
+            open ? "rotate-180 text-success" : ""
           }`}
         />
       </button>
@@ -416,7 +416,7 @@ function SectionHeading({ label, title, description }: { label?: string; title: 
   return (
     <div className="mx-auto max-w-2xl text-center">
       {label && (
-        <Badge variant="outline" className="mb-4 border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1">
+        <Badge variant="outline" className="mb-4 border-success/30 bg-success/10 text-success-text px-3 py-1">
           {label}
         </Badge>
       )}
@@ -445,13 +445,13 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground antialiased selection:bg-emerald-500/20 selection:text-emerald-500">
+    <div className="relative min-h-screen bg-background text-foreground antialiased selection:bg-success/20 selection:text-success">
       
       {/* ──────── Modernized Hero Section ──────── */}
       <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-20 lg:pt-20 lg:pb-32">
         {/* Dynamic Glowing Radial Backgrounds */}
-        <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-transparent blur-3xl" />
-        <div className="pointer-events-none absolute top-1/2 -right-40 -z-10 size-96 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-br from-success/15 via-success/10 to-transparent blur-3xl" />
+        <div className="pointer-events-none absolute top-1/2 -right-40 -z-10 size-96 rounded-full bg-success/10 blur-3xl" />
 
         {/* Subtle SVG Grid Overlay */}
         <div className="absolute inset-0 -z-10 opacity-[0.03] dark:opacity-[0.05]">
@@ -470,14 +470,14 @@ export default function LandingPage() {
             
             {/* Left Column: Hero Content */}
             <div className="space-y-8 lg:col-span-6">
-              <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 py-1.5 px-3 backdrop-blur-md">
-                <Zap className="mr-1.5 size-3.5 fill-emerald-500" />
+              <Badge variant="outline" className="border-success/30 bg-success/10 text-success-text py-1.5 px-3 backdrop-blur-md">
+                <Zap className="mr-1.5 size-3.5 fill-success" />
                 AI-powered Data Intelligence
               </Badge>
 
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]">
                 Turn raw data into{" "}
-                <span className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400 bg-clip-text text-transparent dark:from-emerald-400 dark:to-teal-300">
+                <span className="bg-gradient-to-r from-success via-success to-success bg-clip-text text-transparent dark:from-success dark:to-success">
                   instant clarity
                 </span>
               </h1>
@@ -488,7 +488,7 @@ export default function LandingPage() {
 
               <div className="flex flex-wrap items-center gap-4">
                 <Link href="/signup">
-                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-xl shadow-emerald-600/20 transition-all hover:shadow-2xl hover:shadow-emerald-600/30 hover:-translate-y-0.5 rounded-xl h-12 px-6">
+                  <Button size="lg" className="bg-success hover:bg-success/90 text-white shadow-xl shadow-success/20 transition-all hover:shadow-2xl hover:shadow-success/30 hover:-translate-y-0.5 rounded-xl h-12 px-6">
                     Get started free
                     <ArrowRight className="ml-2 size-4" />
                   </Button>
@@ -504,15 +504,15 @@ export default function LandingPage() {
               {/* Trust Badges */}
               <div className="pt-2 border-t border-border/40 grid grid-cols-3 gap-4 text-xs font-medium text-muted-foreground">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
+                  <CheckCircle2 className="size-4 text-success shrink-0" />
                   <span>No credit card needed</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
+                  <CheckCircle2 className="size-4 text-success shrink-0" />
                   <span>Free tier available</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
+                  <CheckCircle2 className="size-4 text-success shrink-0" />
                   <span>38s avg turnaround</span>
                 </div>
               </div>
@@ -533,7 +533,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((stat, i) => (
               <div key={i} className="text-center">
-                <p className="text-3xl font-extrabold font-mono tracking-tight text-emerald-600 dark:text-emerald-400">
+                <p className="text-3xl font-extrabold font-mono tracking-tight text-success-text">
                   <AnimatedCounter value={stat.value} />
                 </p>
                 <p className="mt-1 text-sm font-medium text-muted-foreground">{stat.label}</p>
@@ -557,7 +557,7 @@ export default function LandingPage() {
                 key={i}
                 slide={slide}
                 className={`transition-all duration-300 ${
-                  i === activeSlide ? "ring-2 ring-emerald-500/50 shadow-xl shadow-emerald-500/10 scale-[1.02]" : ""
+                  i === activeSlide ? "ring-2 ring-success/50 shadow-xl shadow-success/10 scale-[1.02]" : ""
                 }`}
               />
             ))}
@@ -577,9 +577,9 @@ export default function LandingPage() {
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="group rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md p-7 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1 hover:border-emerald-500/40"
+                className="group rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md p-7 transition-all duration-300 hover:shadow-xl hover:shadow-success/5 hover:-translate-y-1 hover:border-success/40"
               >
-                <div className="flex size-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white dark:text-emerald-400 dark:group-hover:text-white">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-success/10 text-success-text transition-colors group-hover:bg-success group-hover:text-white dark:group-hover:text-white">
                   {feature.icon}
                 </div>
                 <h3 className="mt-5 text-lg font-semibold">{feature.title}</h3>
@@ -601,7 +601,7 @@ export default function LandingPage() {
           <div className="mt-16 grid gap-8 md:grid-cols-4">
             {steps.map((step, i) => (
               <div key={i} className="relative text-center group">
-                <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-lg font-extrabold text-white shadow-lg shadow-emerald-500/20 transition-transform group-hover:scale-110">
+                <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-success to-success text-lg font-extrabold text-white shadow-lg shadow-success/20 transition-transform group-hover:scale-110">
                   {step.n}
                 </div>
                 {i < steps.length - 1 && (
@@ -627,9 +627,9 @@ export default function LandingPage() {
             {fileTypes.map((ft, i) => (
               <div
                 key={i}
-                className="group flex flex-col items-center rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md p-8 text-center transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1 hover:border-emerald-500/40"
+                className="group flex flex-col items-center rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md p-8 text-center transition-all duration-300 hover:shadow-xl hover:shadow-success/5 hover:-translate-y-1 hover:border-success/40"
               >
-                <div className="flex size-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white dark:text-emerald-400 dark:group-hover:text-white">
+                <div className="flex size-16 items-center justify-center rounded-2xl bg-success/10 text-success-text transition-colors group-hover:bg-success group-hover:text-white dark:group-hover:text-white">
                   {ft.icon}
                 </div>
                 <h3 className="mt-5 text-xl font-bold">{ft.name}</h3>
@@ -650,7 +650,7 @@ export default function LandingPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-3">
             {extras.map((item, i) => (
               <div key={i} className="rounded-2xl border border-border/60 bg-card/40 p-8 text-center backdrop-blur-md">
-                <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-success/10 text-success-text">
                   <item.icon className="size-6" />
                 </div>
                 <h3 className="mt-5 font-semibold text-base">{item.title}</h3>
@@ -676,7 +676,7 @@ export default function LandingPage() {
                   <img
                     src={`https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=10B981&color=fff&bold=true&size=40`}
                     alt={t.name}
-                    className="size-11 rounded-full ring-2 ring-emerald-500/30"
+                    className="size-11 rounded-full ring-2 ring-success/30"
                   />
                   <div>
                     <p className="text-sm font-semibold">{t.name}</p>
@@ -685,7 +685,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: 5 }).map((_, s) => (
-                    <Star key={s} className="size-4 fill-emerald-500 text-emerald-500" />
+                    <Star key={s} className="size-4 fill-success text-success" />
                   ))}
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground italic">&ldquo;{t.quote}&rdquo;</p>
@@ -712,26 +712,26 @@ export default function LandingPage() {
 
       {/* ──────── CTA & Newsletter ──────── */}
       <section className="relative overflow-hidden py-20 lg:py-28">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-emerald-800 to-slate-900" />
-        <div className="pointer-events-none absolute top-1/2 left-1/2 size-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/20 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-success via-success to-card" />
+        <div className="pointer-events-none absolute top-1/2 left-1/2 size-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-success/20 blur-3xl" />
 
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
             Start getting clearer data insights today
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-emerald-100/90 leading-relaxed">
+          <p className="mx-auto mt-4 max-w-xl text-lg text-success-text/90 leading-relaxed">
             Join analysts and founders using DataNav AI to skip manual reporting and catch critical operational signals early.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/signup">
-              <Button size="lg" className="bg-white text-emerald-900 hover:bg-emerald-50 shadow-2xl rounded-xl h-12 px-7 font-semibold transition-all hover:scale-[1.02]">
+              <Button size="lg" className="bg-white text-success-text hover:bg-accent shadow-2xl rounded-xl h-12 px-7 font-semibold transition-all hover:scale-[1.02]">
                 Get started free
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </Link>
             <Link href="/explore">
-              <Button size="lg" variant="outline" className="border-emerald-400/40 text-white hover:bg-white/10 rounded-xl h-12 px-7 backdrop-blur-sm transition-all hover:scale-[1.02]">
+              <Button size="lg" variant="outline" className="border-success/40 text-white hover:bg-white/10 rounded-xl h-12 px-7 backdrop-blur-sm transition-all hover:scale-[1.02]">
                 <Globe className="mr-2 size-4" />
                 Explore reports
               </Button>
@@ -739,10 +739,10 @@ export default function LandingPage() {
           </div>
 
           {/* Newsletter Box */}
-          <div className="mx-auto mt-14 max-w-md rounded-2xl border border-emerald-400/20 bg-white/5 backdrop-blur-md p-6">
+          <div className="mx-auto mt-14 max-w-md rounded-2xl border border-success/20 bg-white/5 backdrop-blur-md p-6">
             <div className="flex items-center justify-center gap-2 mb-3">
-              <Mail className="size-4 text-emerald-300" />
-              <span className="text-sm font-medium text-emerald-100">Stay updated with feature releases</span>
+              <Mail className="size-4 text-success-text/60" />
+              <span className="text-sm font-medium text-success-text/10">Stay updated with feature releases</span>
             </div>
             <form
               onSubmit={(e) => {
@@ -757,12 +757,12 @@ export default function LandingPage() {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="h-11 flex-1 border-emerald-400/30 bg-black/20 text-white placeholder:text-emerald-200/50 focus:border-emerald-300 focus:ring-emerald-300 rounded-xl"
+                className="h-11 flex-1 border-success/30 bg-black/20 text-white placeholder:text-success-text/50 focus:border-success/50 focus:ring-success/50 rounded-xl"
                 required
               />
               <Button
                 type="submit"
-                className="h-11 shrink-0 bg-white text-emerald-900 hover:bg-emerald-50 font-semibold rounded-xl px-5"
+                className="h-11 shrink-0 bg-white text-success-text hover:bg-accent font-semibold rounded-xl px-5"
               >
                 Subscribe
               </Button>

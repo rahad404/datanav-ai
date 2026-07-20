@@ -18,15 +18,15 @@ export function ReportCard({ report }: ReportCardProps) {
 
   return (
     <Link href={`/reports/${report._id}`}>
-      <div className="group rounded-xl border bg-card p-5 transition-all hover:shadow-md hover:shadow-emerald-500/5 hover:border-emerald-500/20">
+      <div className="group rounded-xl border bg-card p-5 transition-all hover:shadow-md hover:shadow-success/5 hover:border-success/20">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">
             <FileText className="size-5" />
           </div>
           <StatusBadge status={report.status} />
         </div>
 
-        <h3 className="mt-4 font-semibold leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+        <h3 className="mt-4 font-semibold leading-snug group-hover:text-success-text transition-colors">
           {report.title}
         </h3>
 

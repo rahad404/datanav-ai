@@ -12,8 +12,8 @@ export default function AboutPage() {
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       {/* Hero */}
       <div className="text-center mb-16">
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-600/10 mx-auto mb-6">
-          <Compass className="size-7 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex size-14 items-center justify-center           rounded-2xl bg-success/10 mx-auto mb-6">
+          <Compass className="size-7 text-success-text" />
         </div>
         <h1 className="text-4xl font-bold tracking-tight">About DataNav AI</h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -48,7 +48,7 @@ export default function AboutPage() {
         <div className="grid gap-6 sm:grid-cols-2">
           {values.map((v, i) => (
             <div key={i} className="rounded-xl border bg-card p-6">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 mb-4">
+              <div className="flex size-10 items-center justify-center             rounded-lg bg-icon-bg text-success-text mb-4">
                 <v.icon className="size-5" />
               </div>
               <h3 className="font-semibold mb-2">{v.title}</h3>
@@ -59,8 +59,8 @@ export default function AboutPage() {
       </div>
 
       {/* Mission */}
-      <div className="rounded-xl border bg-emerald-600/5 p-8 text-center">
-        <BarChart3 className="size-8 text-emerald-500 mx-auto mb-4" />
+      <div className="rounded-xl border bg-success/5 p-8 text-center">
+        <BarChart3 className="size-8 text-success mx-auto mb-4" />
         <h2 className="text-2xl font-bold mb-2">Our Mission</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           To make structured data analysis as simple as asking a question — 

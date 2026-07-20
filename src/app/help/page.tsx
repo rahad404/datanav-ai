@@ -69,8 +69,8 @@ export default function HelpPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center mb-12">
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-600/10 mx-auto mb-6">
-          <HelpCircle className="size-7 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex size-14 items-center justify-center           rounded-2xl bg-success/10 mx-auto mb-6">
+          <HelpCircle className="size-7 text-success-text" />
         </div>
         <h1 className="text-4xl font-bold tracking-tight">Help & FAQ</h1>
         <p className="mt-4 text-lg text-muted-foreground">
@@ -83,7 +83,7 @@ export default function HelpPage() {
         Can&apos;t find what you&apos;re looking for?{" "}
         <Link
           href="/contact"
-          className="text-emerald-600 hover:underline dark:text-emerald-400"
+          className="text-success-text hover:underline"
         >
           Contact our support team
         </Link>
@@ -104,28 +104,28 @@ export default function HelpPage() {
             href="/items/add"
             className="flex items-center gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/50"
           >
-            <ExternalLink className="size-4 text-emerald-500" />
+            <ExternalLink className="size-4 text-success" />
             <span className="text-sm">How to upload a file</span>
           </Link>
           <Link
             href="/items/manage"
             className="flex items-center gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/50"
           >
-            <ExternalLink className="size-4 text-emerald-500" />
+            <ExternalLink className="size-4 text-success" />
             <span className="text-sm">Managing your reports</span>
           </Link>
           <Link
             href="/privacy"
             className="flex items-center gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/50"
           >
-            <ExternalLink className="size-4 text-emerald-500" />
+            <ExternalLink className="size-4 text-success" />
             <span className="text-sm">Privacy policy</span>
           </Link>
           <Link
             href="/terms"
             className="flex items-center gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/50"
           >
-            <ExternalLink className="size-4 text-emerald-500" />
+            <ExternalLink className="size-4 text-success" />
             <span className="text-sm">Terms of service</span>
           </Link>
         </div>

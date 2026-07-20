@@ -169,7 +169,7 @@ export default function NewAnalysisPage() {
         <Button
           type="submit"
           size="lg"
-          className="w-full bg-emerald-600 hover:bg-emerald-700"
+          className="w-full bg-success hover:bg-success/90"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

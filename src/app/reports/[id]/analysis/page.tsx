@@ -148,7 +148,7 @@ export default function AnalysisWorkspacePage() {
               onClick={() => setDepth("quick")}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 depth === "quick"
-                  ? "bg-emerald-600 text-white"
+                  ? "bg-success text-white"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -159,7 +159,7 @@ export default function AnalysisWorkspacePage() {
               onClick={() => setDepth("deep")}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 depth === "deep"
-                  ? "bg-emerald-600 text-white"
+                  ? "bg-success text-white"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -183,8 +183,8 @@ export default function AnalysisWorkspacePage() {
             </Button>
           )}
 
-          {report.status === "done" && (
-            <Button variant="outline" size="sm" disabled title="Coming soon">
+          {report.status === "done" && analysis?.jobStatus === "done" && (
+            <Button variant="outline" size="sm" onClick={() => window.print()}>
               <Download className="mr-1.5 size-3.5" />
               PDF
             </Button>
@@ -197,13 +197,13 @@ export default function AnalysisWorkspacePage() {
         <div className="flex items-center gap-2 mb-2">
           <Badge
             variant="outline"
-            className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+            className="border-success/30 bg-success/10 text-success-text"
           >
             <Sparkles className="mr-1 size-3" />
             AI Analysis
           </Badge>
           {pollStatus && (
-            <Badge variant="outline" className="border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400">
+            <Badge variant="outline" className="border-info/30 bg-info-bg text-info-text">
               <span className="mr-1 size-1.5 animate-pulse rounded-full bg-current" />
               Processing
             </Badge>
@@ -232,8 +232,8 @@ export default function AnalysisWorkspacePage() {
         </div>
       ) : analysis.jobStatus === "queued" || analysis.jobStatus === "processing" ? (
         <div className="rounded-xl border bg-card p-12 text-center">
-          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-            <TrendingUp className="size-6 animate-pulse text-blue-600 dark:text-blue-400" />
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-info-bg">
+            <TrendingUp className="size-6 animate-pulse text-info-text" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">Analysis in progress</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -255,7 +255,7 @@ function AnalysisContent({ analysis }: { analysis: Analysis }) {
       {/* Summary */}
       <div className="rounded-xl border bg-card p-6">
         <div className="flex items-center gap-2 mb-3">
-          <Lightbulb className="size-5 text-emerald-500" />
+          <Lightbulb className="size-5 text-success" />
           <h2 className="text-lg font-semibold">Summary</h2>
         </div>
         <p className="text-sm leading-relaxed text-muted-foreground">{analysis.summary}</p>
@@ -297,7 +297,7 @@ function AnalysisContent({ analysis }: { analysis: Analysis }) {
       {analysis.risks.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold mb-4">
-            <ShieldAlert className="mr-2 inline size-5 text-orange-500" />
+            <ShieldAlert className="mr-2 inline size-5 text-risk-high" />
             Risk Flags
           </h2>
           <div className="space-y-3">
@@ -320,14 +320,14 @@ function AnalysisContent({ analysis }: { analysis: Analysis }) {
       {analysis.recommendations.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold mb-4">
-            <ListChecks className="mr-2 inline size-5 text-emerald-500" />
+            <ListChecks className="mr-2 inline size-5 text-success" />
             Recommendations
           </h2>
           <div className="rounded-xl border bg-card p-6">
             <ul className="space-y-3">
               {analysis.recommendations.map((rec, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm">
-                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-600/10 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-success/10 text-xs font-bold text-success-text">
                     {i + 1}
                   </span>
                   <span className="text-muted-foreground">{rec}</span>

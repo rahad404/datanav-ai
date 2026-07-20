@@ -35,8 +35,8 @@ export default function ContactPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center mb-12">
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-600/10 mx-auto mb-6">
-          <MessageSquare className="size-7 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex size-14 items-center justify-center           rounded-2xl bg-success/10 mx-auto mb-6">
+          <MessageSquare className="size-7 text-success-text" />
         </div>
         <h1 className="text-4xl font-bold tracking-tight">Contact Us</h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
@@ -84,7 +84,7 @@ export default function ContactPage() {
             </div>
             <Button
               type="submit"
-              className="bg-emerald-600 hover:bg-emerald-700 w-full"
+              className="bg-success hover:bg-success/90 w-full"
               disabled={isSending}
             >
               <Send className="mr-2 size-4" />
@@ -97,7 +97,7 @@ export default function ContactPage() {
         <div className="space-y-8">
           <div className="rounded-xl border bg-card p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-icon-bg text-success-text">
                 <Mail className="size-5" />
               </div>
               <div>
@@ -109,7 +109,7 @@ export default function ContactPage() {
 
           <div className="rounded-xl border bg-card p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-icon-bg text-success-text">
                 <MapPin className="size-5" />
               </div>
               <div>

@@ -38,7 +38,7 @@ export default function DashboardPage() {
           Sign in to see your reports, stats, and recent activity.
         </p>
         <Link href="/login?callbackUrl=/dashboard">
-          <Button className="mt-6 bg-emerald-600 hover:bg-emerald-700">Sign in</Button>
+          <Button className="mt-6 bg-success hover:bg-success/90">Sign in</Button>
         </Link>
       </div>
     );
@@ -61,7 +61,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <Link href="/items/add">
-          <Button className="bg-emerald-600 hover:bg-emerald-700">
+          <Button className="bg-success hover:bg-success/90">
             <Plus className="mr-2 size-4" />
             New Analysis
           </Button>
@@ -74,25 +74,25 @@ export default function DashboardPage() {
           icon={<FileText className="size-5" />}
           label="Total Reports"
           value={isLoading ? "..." : String(totalReports)}
-          color="bg-emerald-600/10 text-emerald-600 dark:text-emerald-400"
+          color="bg-success/10 text-success-text"
         />
         <StatCard
           icon={<Sparkles className="size-5" />}
           label="Analyzed"
           value={isLoading ? "..." : String(doneReports)}
-          color="bg-blue-600/10 text-blue-600 dark:text-blue-400"
+          color="bg-info-bg text-info-text"
         />
         <StatCard
           icon={<BarChart3 className="size-5" />}
           label="Processing"
           value={isLoading ? "..." : String(processingReports)}
-          color="bg-amber-600/10 text-amber-600 dark:text-amber-400"
+          color="bg-warning-bg text-warning-text"
         />
         <StatCard
           icon={<Clock className="size-5" />}
           label="This Month"
           value={isLoading ? "..." : String(totalReports)}
-          color="bg-violet-600/10 text-violet-600 dark:text-violet-400"
+          color="bg-category-sales-bg text-category-sales-text"
         />
       </div>
 
@@ -103,7 +103,7 @@ export default function DashboardPage() {
             <h2 className="text-lg font-semibold">Recent Reports</h2>
             <Link
               href="/items/manage"
-              className="text-sm text-emerald-600 hover:underline dark:text-emerald-400"
+              className="text-sm text-success-text hover:underline"
             >
               View all
             </Link>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
                   href={`/reports/${report._id}`}
                   className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/50"
                 >
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">
                     <FileText className="size-5" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -153,7 +153,7 @@ export default function DashboardPage() {
           {latestAnalysis ? (
             <div className="rounded-xl border bg-card p-5">
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="size-4 text-emerald-500" />
+                <TrendingUp className="size-4 text-success" />
                 <span className="text-sm font-medium">{latestAnalysis.title}</span>
               </div>
               <p className="text-xs text-muted-foreground line-clamp-3 mb-4">

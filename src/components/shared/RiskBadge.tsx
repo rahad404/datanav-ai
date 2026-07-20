@@ -3,10 +3,10 @@ import { cn } from "@/lib/utils";
 import { AlertTriangle, AlertCircle, Info, Skull } from "lucide-react";
 
 const severityConfig = {
-  low: { icon: Info, color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" },
-  medium: { icon: AlertTriangle, color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300" },
-  high: { icon: AlertCircle, color: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300" },
-  critical: { icon: Skull, color: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" },
+  low: { icon: Info, color: "bg-info-bg text-info-text" },
+  medium: { icon: AlertTriangle, color: "bg-warning-bg text-warning-text" },
+  high: { icon: AlertCircle, color: "bg-risk-high-bg text-risk-high-text" },
+  critical: { icon: Skull, color: "bg-danger-bg text-danger-text" },
 };
 
 interface RiskBadgeProps {

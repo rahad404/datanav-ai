@@ -46,7 +46,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
         {isUser ? (
           <>
             <AvatarImage src="" />
-            <AvatarFallback className="bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+            <AvatarFallback className="bg-icon-bg text-success">
               <User className="size-4" />
             </AvatarFallback>
           </>
@@ -59,7 +59,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
           isUser
-            ? "bg-emerald-600 text-white"
+            ? "bg-success text-white"
             : "bg-muted text-foreground"
         }`}
       >
@@ -215,7 +215,7 @@ export function ChatWidget() {
       {/* Floating button */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 transition-all hover:bg-emerald-700 hover:scale-105 active:scale-95"
+        className="fixed bottom-6 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-success text-white shadow-lg shadow-success/30 transition-all hover:bg-success/90 hover:scale-105 active:scale-95"
         aria-label="Open chat assistant"
       >
         <MessageCircle className="size-6" />
@@ -227,7 +227,7 @@ export function ChatWidget() {
           <SheetHeader className="border-b border-border px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-icon-bg text-success-text">
                   <Bot className="size-4" />
                 </div>
                 <SheetTitle className="text-base">AI Assistant</SheetTitle>
@@ -259,7 +259,7 @@ export function ChatWidget() {
               </div>
             ) : messages.length === 0 && !isLoading ? (
               <div className="flex flex-col items-center justify-center h-full px-6 text-center">
-                <Bot className="size-12 text-emerald-600/30 mb-4" />
+                <Bot className="size-12 text-success/30 mb-4" />
                 <p className="text-sm font-medium mb-1">Ask me anything</p>
                 <p className="text-xs text-muted-foreground mb-6 max-w-xs">
                   I can help you understand your data, navigate the app, or answer questions
@@ -321,7 +321,7 @@ export function ChatWidget() {
                 type="submit"
                 size="icon"
                 disabled={!input.trim() || isLoading}
-                className="size-10 shrink-0 rounded-full bg-emerald-600 hover:bg-emerald-700"
+                className="size-10 shrink-0 rounded-full bg-success hover:bg-success/90"
               >
                 <Send className="size-4" />
               </Button>

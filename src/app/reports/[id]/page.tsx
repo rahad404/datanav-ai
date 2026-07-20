@@ -2,7 +2,8 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   FileText,
   CalendarDays,
@@ -13,6 +14,8 @@ import {
   ShieldAlert,
   ListChecks,
   ExternalLink,
+  RotateCcw,
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -59,6 +62,14 @@ export default function ReportDetailPage() {
     queryKey: ["related-reports", id],
     queryFn: () => reportsApi.getRelated(id),
     enabled: !!id,
+  });
+
+  const reRunMutation = useMutation({
+    mutationFn: () => analysisApi.regenerate(id),
+    onSuccess: () => {
+      toast.success("Analysis re-running");
+    },
+    onError: (err) => toast.error(err instanceof Error ? err.message : "Failed to re-run"),
   });
 
   if (reportLoading) {
@@ -133,36 +144,45 @@ export default function ReportDetailPage() {
 
           {report.status === "processing" && (
             <div className="rounded-xl border bg-card p-8 text-center">
-              <div className="flex size-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 mx-auto">
-                <TrendingUp className="size-6 text-blue-600 dark:text-blue-400 animate-pulse" />
+              <div className="flex size-12 items-center justify-center rounded-full bg-info-bg mx-auto">
+                <Loader2 className="size-6 text-info-text animate-spin" />
               </div>
               <h3 className="mt-4 font-semibold">Analysis in progress</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                AI is analyzing your data. This usually takes a few seconds.
+                AI is analyzing your data. This page updates automatically.
               </p>
             </div>
           )}
 
           {report.status === "failed" && (
             <div className="rounded-xl border bg-card p-8 text-center">
-              <div className="flex size-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 mx-auto">
-                <ShieldAlert className="size-6 text-red-600 dark:text-red-400" />
+              <div className="flex size-12 items-center justify-center rounded-full bg-danger-bg mx-auto">
+                <ShieldAlert className="size-6 text-danger-text" />
               </div>
               <h3 className="mt-4 font-semibold">Analysis failed</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Something went wrong during analysis. Try uploading again.
+              <p className="mt-1 text-sm text-muted-foreground mb-4">
+                Something went wrong during analysis. Try again or upload a new file.
               </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => reRunMutation.mutate()}
+                disabled={reRunMutation.isPending}
+              >
+                <RotateCcw className={`mr-1.5 size-3.5 ${reRunMutation.isPending ? "animate-spin" : ""}`} />
+                {reRunMutation.isPending ? "Re-running..." : "Re-run Analysis"}
+              </Button>
             </div>
           )}
 
           {report.status === "uploaded" && (
             <div className="rounded-xl border bg-card p-8 text-center">
               <div className="flex size-12 items-center justify-center rounded-full bg-muted mx-auto">
-                <FileText className="size-6 text-muted-foreground" />
+                <Loader2 className="size-6 text-muted-foreground animate-spin" />
               </div>
-              <h3 className="mt-4 font-semibold">Awaiting analysis</h3>
+              <h3 className="mt-4 font-semibold">Analysis starting</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                This report has been uploaded but not yet analyzed.
+                Your report is being queued for analysis. Please wait...
               </p>
             </div>
           )}
@@ -181,11 +201,11 @@ export default function ReportDetailPage() {
                     href={`/reports/${r._id}`}
                     className="group flex items-start gap-3 rounded-lg p-2 transition-colors hover:bg-muted/50"
                   >
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">
                       <FileText className="size-4" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                      <p className="text-sm font-medium truncate group-hover:text-success-text transition-colors">
                         {r.title}
                       </p>
                       <CategoryBadge category={r.category} className="mt-1" />
@@ -263,7 +283,7 @@ function AnalysisSection({
       {/* Summary */}
       <div className="rounded-xl border bg-card p-6">
         <div className="flex items-center gap-2 mb-3">
-          <Lightbulb className="size-5 text-emerald-500" />
+          <Lightbulb className="size-5 text-success" />
           <h2 className="text-lg font-semibold">Summary</h2>
         </div>
         <p className="text-sm leading-relaxed text-muted-foreground">{analysis.summary}</p>
@@ -273,7 +293,7 @@ function AnalysisSection({
       {analysis.kpis.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="size-5 text-emerald-500" />
+            <TrendingUp className="size-5 text-success" />
             <h2 className="text-lg font-semibold">Key Metrics</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -288,7 +308,7 @@ function AnalysisSection({
       {analysis.trends.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="size-5 text-emerald-500" />
+            <TrendingUp className="size-5 text-success" />
             <h2 className="text-lg font-semibold">Trends</h2>
           </div>
           <div className="space-y-3">
@@ -311,7 +331,7 @@ function AnalysisSection({
       {analysis.risks.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <ShieldAlert className="size-5 text-orange-500" />
+            <ShieldAlert className="size-5 text-risk-high" />
             <h2 className="text-lg font-semibold">Risk Flags</h2>
           </div>
           <div className="space-y-3">
@@ -334,14 +354,14 @@ function AnalysisSection({
       {analysis.recommendations.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <ListChecks className="size-5 text-emerald-500" />
+            <ListChecks className="size-5 text-success" />
             <h2 className="text-lg font-semibold">Recommendations</h2>
           </div>
           <div className="rounded-xl border bg-card p-6">
             <ul className="space-y-3">
               {analysis.recommendations.map((rec, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm">
-                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-600/10 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-success/10 text-xs font-bold text-success-text">
                     {i + 1}
                   </span>
                   <span className="text-muted-foreground">{rec}</span>

@@ -42,7 +42,7 @@ export default function AdminPage() {
         <p className="mt-1 text-muted-foreground">Manage users and platform settings</p>
       </div>
       <div className="rounded-xl border bg-card p-8 text-center">
-        <Shield className="mx-auto size-12 text-emerald-500 mb-4" />
+        <Shield className="mx-auto size-12 text-success mb-4" />
         <h2 className="text-xl font-semibold">Admin Panel</h2>
         <p className="mt-2 text-muted-foreground">
           Admin features are under development. Check back soon.

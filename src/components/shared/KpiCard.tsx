@@ -18,8 +18,8 @@ export function KpiCard({ kpi, className }: KpiCardProps) {
         <p
           className={cn(
             "mt-1 text-sm font-medium",
-            isPositive && "text-emerald-500",
-            isNegative && "text-red-500",
+            isPositive && "text-success",
+            isNegative && "text-danger",
             !isPositive && !isNegative && "text-muted-foreground"
           )}
         >

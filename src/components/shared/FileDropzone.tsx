@@ -57,9 +57,9 @@ export function FileDropzone({ onFileSelect, file, onClear }: FileDropzoneProps)
   if (file) {
     const isSpreadsheet = file.name.match(/\.(csv|xlsx|xls)$/i);
     return (
-      <div className="rounded-xl border-2 border-emerald-500/30 bg-emerald-500/5 p-6">
+      <div className="rounded-xl border-2 border-success/30 bg-success/5 p-6">
         <div className="flex items-center gap-4">
-          <div className="flex size-12 items-center justify-center rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+          <div className="flex size-12 items-center justify-center rounded-xl bg-icon-bg text-success-text">
             {isSpreadsheet ? <FileSpreadsheet className="size-6" /> : <FileJson className="size-6" />}
           </div>
           <div className="flex-1 min-w-0">
@@ -86,7 +86,7 @@ export function FileDropzone({ onFileSelect, file, onClear }: FileDropzoneProps)
       className={cn(
         "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-colors",
         dragOver
-          ? "border-emerald-500 bg-emerald-500/5"
+          ? "border-success bg-success/5"
           : "border-muted-foreground/25 hover:border-muted-foreground/50 hover:bg-muted/30"
       )}
     >
@@ -94,7 +94,7 @@ export function FileDropzone({ onFileSelect, file, onClear }: FileDropzoneProps)
         <Upload className="size-6 text-muted-foreground" />
       </div>
       <p className="mt-4 font-medium">
-        <span className="text-emerald-600 dark:text-emerald-400">Click to upload</span> or drag and drop
+        <span className="text-success-text">Click to upload</span> or drag and drop
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
         CSV, XLSX, XLS or JSON (max 10MB)

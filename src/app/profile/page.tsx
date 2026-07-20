@@ -204,7 +204,7 @@ export default function ProfilePage() {
           <Button
             onClick={handleSave}
             disabled={isSaving || isUploadingImage}
-            className="bg-emerald-600 hover:bg-emerald-700"
+            className="bg-success hover:bg-success/90"
           >
             {isUploadingImage ? (
               "Uploading image..."

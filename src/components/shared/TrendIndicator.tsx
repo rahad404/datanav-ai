@@ -8,8 +8,8 @@ interface TrendIndicatorProps {
 }
 
 const trendConfig: Record<string, { icon: typeof TrendingUp; color: string }> = {
-  up: { icon: TrendingUp, color: "text-emerald-500" },
-  down: { icon: TrendingDown, color: "text-red-500" },
+  up: { icon: TrendingUp, color: "text-success" },
+  down: { icon: TrendingDown, color: "text-danger" },
   stable: { icon: Minus, color: "text-muted-foreground" },
   flat: { icon: Minus, color: "text-muted-foreground" },
 };

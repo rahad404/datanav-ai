@@ -64,7 +64,7 @@ export default function ForgotPasswordPage() {
 
       {sent ? (
         <div className="rounded-xl border bg-card p-8 text-center">
-          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 mb-4">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-success/10 text-success-text mb-4">
             <Mail className="size-6" />
           </div>
           <p className="text-sm text-muted-foreground">
@@ -90,7 +90,7 @@ export default function ForgotPasswordPage() {
           </div>
           <Button
             type="submit"
-            className="w-full h-11 bg-emerald-600 hover:bg-emerald-700"
+            className="w-full h-11 bg-success hover:bg-success/90"
             disabled={isLoading}
           >
             <Send className="mr-2 size-4" />
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Remember your password?{" "}
-        <Link href="/login" className="font-medium text-emerald-600 hover:underline dark:text-emerald-400">
+        <Link href="/login" className="font-medium text-success-text hover:underline">
           Sign in
         </Link>
       </p>

@@ -159,8 +159,3 @@ npm run build
 
 Set the same environment variables in your Vercel project dashboard (`.env` values are local-only).
 
----
-
-## License
-
-MIT

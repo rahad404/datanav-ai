@@ -31,7 +31,8 @@ async function getAccessToken(): Promise<string> {
     body: JSON.stringify({ sessionToken: session.data.session.token }),
   });
   if (!res.ok) {
-    throw new ApiError("Failed to bridge session to JWT", res.status);
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(body.message || "Failed to bridge session to JWT", res.status);
   }
   const { accessToken, expiresIn } = await res.json();
   cachedToken = { value: accessToken, expiresAt: Date.now() + expiresIn * 1000 };

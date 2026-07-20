@@ -63,13 +63,12 @@ async function handleResponse<T>(res: Response): Promise<T> {
 }
 
 function buildUrl(path: string, params?: QueryParams): string {
+  if (!params) return path;
   const url = new URL(`${API_BASE_URL}${path}`);
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined) url.searchParams.set(k, String(v));
-    });
-  }
-  return url.toString();
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined) url.searchParams.set(k, String(v));
+  });
+  return `${path}${url.search}`;
 }
 
 export async function request<T = unknown>(

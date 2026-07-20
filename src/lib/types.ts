@@ -39,7 +39,7 @@ export interface ReportListResponse {
 
 export interface Trend {
    label: string;
-   direction: "up" | "down" | "stable";
+   direction: "up" | "down" | "flat" | "stable";
    detail: string;
 }
 

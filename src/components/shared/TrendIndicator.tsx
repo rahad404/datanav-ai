@@ -2,19 +2,21 @@ import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TrendIndicatorProps {
-  direction: "up" | "down" | "stable";
+  direction: "up" | "down" | "flat" | "stable";
   label?: string;
   className?: string;
 }
 
-export function TrendIndicator({ direction, label, className }: TrendIndicatorProps) {
-  const config = {
-    up: { icon: TrendingUp, color: "text-emerald-500" },
-    down: { icon: TrendingDown, color: "text-red-500" },
-    stable: { icon: Minus, color: "text-muted-foreground" },
-  };
+const trendConfig: Record<string, { icon: typeof TrendingUp; color: string }> = {
+  up: { icon: TrendingUp, color: "text-emerald-500" },
+  down: { icon: TrendingDown, color: "text-red-500" },
+  stable: { icon: Minus, color: "text-muted-foreground" },
+  flat: { icon: Minus, color: "text-muted-foreground" },
+};
 
-  const { icon: Icon, color } = config[direction];
+export function TrendIndicator({ direction, label, className }: TrendIndicatorProps) {
+  const config = trendConfig[direction] || trendConfig.flat;
+  const { icon: Icon, color } = config;
 
   return (
     <div className={cn("flex items-center gap-1.5", className)}>

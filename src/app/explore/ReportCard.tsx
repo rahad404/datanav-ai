@@ -17,7 +17,7 @@ export function ReportCard({ report }: ReportCardProps) {
   });
 
   return (
-    <Link href={`/reports/${report._id}`}>
+    <Link href={`/reports/${report._id}/analysis`}>
       <div className="group rounded-xl border bg-card p-5 transition-all hover:shadow-md hover:shadow-success/5 hover:border-success/20">
         <div className="flex items-start justify-between gap-4">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">

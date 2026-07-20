@@ -86,7 +86,7 @@ export default function NewAnalysisPage() {
         // Analysis will be available shortly
       });
 
-      router.push(`/reports/${report._id}`);
+      router.push(`/reports/${report._id}/analysis`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to upload report");
     } finally {

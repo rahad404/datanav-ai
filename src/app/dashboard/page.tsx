@@ -120,7 +120,7 @@ export default function DashboardPage() {
               {data.items.slice(0, 5).map((report) => (
                 <Link
                   key={report._id}
-                  href={`/reports/${report._id}`}
+                  href={`/reports/${report._id}/analysis`}
                   className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/50"
                 >
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">

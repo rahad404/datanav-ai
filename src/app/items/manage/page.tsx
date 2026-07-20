@@ -148,7 +148,7 @@ export default function MyReportsPage() {
                         </div>
                         <div className="min-w-0">
                           <Link
-                            href={`/reports/${report._id}`}
+                            href={`/reports/${report._id}/analysis`}
                             className="font-medium hover:text-success-text transition-colors truncate block"
                           >
                             {report.title}
@@ -173,7 +173,7 @@ export default function MyReportsPage() {
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center justify-end gap-1">
-                        <Link href={`/reports/${report._id}`}>
+                        <Link href={`/reports/${report._id}/analysis`}>
                           <Button variant="ghost" size="icon" className="size-8">
                             <Eye className="size-4" />
                           </Button>

@@ -198,7 +198,7 @@ export default function ReportDetailPage() {
                 {related.slice(0, 4).map((r) => (
                   <Link
                     key={r._id}
-                    href={`/reports/${r._id}`}
+                    href={`/reports/${r._id}/analysis`}
                     className="group flex items-start gap-3 rounded-lg p-2 transition-colors hover:bg-muted/50"
                   >
                     <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success-text">

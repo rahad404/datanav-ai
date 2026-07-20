@@ -39,6 +39,8 @@ export default function ReportDetailPage() {
     queryKey: ["report", id],
     queryFn: () => reportsApi.get(id),
     enabled: !!id,
+    refetchInterval: (query) =>
+      query.state.data?.status && !["done", "failed"].includes(query.state.data.status) ? 3000 : false,
   });
 
   const {
@@ -49,6 +51,8 @@ export default function ReportDetailPage() {
     queryFn: () => analysisApi.get(id),
     enabled: !!id,
     retry: false,
+    refetchInterval: (query) =>
+      query.state.data?.jobStatus === "processing" || query.state.data?.jobStatus === "queued" ? 3000 : false,
   });
 
   const { data: related } = useQuery({
